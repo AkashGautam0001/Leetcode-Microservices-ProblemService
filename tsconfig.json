@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    /* ===============================
+       Environment
+    =============================== */
+    "target": "ES2022",
+    "lib": ["ES2022"],
+
+    /* ===============================
+       Module system (ESM)
+    =============================== */
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    /* ===============================
+       Paths
+    =============================== */
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    /* ===============================
+       Interop & Emit
+    =============================== */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+
+    /* ===============================
+       Type Safety
+    =============================== */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    /* ===============================
+       Node types
+    =============================== */
+    "types": ["node"],
+
+    /* ===============================
+       Performance
+    =============================== */
+    "skipLibCheck": true
+  },
+
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

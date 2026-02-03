@@ -7,6 +7,7 @@ import {
 } from "./middlewares/error.middleware.js";
 import logger from "./config/logger.config.js";
 import { attachCorrelationIdMiddleware } from "./middlewares/correlation.middleware.js";
+import { connectDB } from "./config/db.config.js";
 
 const app = express();
 
@@ -27,7 +28,8 @@ app.use("/api/v1", v1Router);
 app.use(appErrorHandler);
 app.use(genericErrorHandler);
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, async () => {
   logger.info(`Server running at http://localhost:${serverConfig.PORT}`);
   logger.info("Press Ctrl+C to stop server");
+  await connectDB();
 });

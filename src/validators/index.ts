@@ -21,12 +21,28 @@ export const validateRequestBody = (schema: ZodObject) => {
 export const validateQueryParams = (schema: ZodObject) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await schema.parseAsync(req.body);
-      console.log(req.body);
+      await schema.parseAsync(req.query);
+      logger.info(req.query);
       next();
     } catch (error) {
       res.status(400).json({
-        message: "Invalid request body",
+        message: "Invalid request query parameters",
+        success: false,
+        error: error,
+      });
+    }
+  };
+};
+
+export const validatePathParams = (schema: ZodObject) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await schema.parseAsync(req.params);
+      logger.info(req.params);
+      next();
+    } catch (error) {
+      res.status(400).json({
+        message: "Invalid request path parameters",
         success: false,
         error: error,
       });

@@ -3,8 +3,6 @@ import mongoose, { Document } from "mongoose";
 export interface ITestCase {
   input: string;
   output: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface IProblem extends Document {

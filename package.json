@@ -11,7 +11,10 @@
   "dependencies": {
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "marked": "^17.0.1",
     "mongoose": "^9.1.5",
+    "sanitize-html": "^2.17.0",
+    "turndown": "^7.2.2",
     "uuid": "^13.0.0",
     "winston": "^3.19.0",
     "winston-daily-rotate-file": "^5.0.0",
@@ -20,6 +23,8 @@
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^25.0.3",
+    "@types/sanitize-html": "^2.16.0",
+    "@types/turndown": "^5.0.6",
     "nodemon": "^3.1.11",
     "tsx": "^4.7.0",
     "typescript": "^5.9.3"

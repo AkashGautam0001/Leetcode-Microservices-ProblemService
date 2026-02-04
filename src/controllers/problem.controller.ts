@@ -1,58 +1,56 @@
 import { Request, Response } from "express";
-import { IProblemService } from "../services/problem.service.js";
+import {
+  IProblemService,
+  ProblemService,
+} from "../services/problem.service.js";
+import {
+  IProblemRepository,
+  ProblemRepository,
+} from "../repositories/problem.repository.js";
 
-export interface IProblemController {
-  createProblem(req: Request, res: Response): Promise<void>;
-  getProblemById(req: Request, res: Response): Promise<void>;
-  getAllProblems(req: Request, res: Response): Promise<void>;
-  updateProblem(req: Request, res: Response): Promise<void>;
-  deleteProblem(req: Request, res: Response): Promise<void>;
-  findByDifficulty(req: Request, res: Response): Promise<void>;
-  searchProblems(req: Request, res: Response): Promise<void>;
-}
+const problemRepository: IProblemRepository = new ProblemRepository();
+const problemService: IProblemService = new ProblemService(problemRepository);
 
-export class ProblemController implements IProblemController {
-  private problemService: IProblemService;
-
-  constructor(problemService: IProblemService) {
-    this.problemService = problemService;
-  }
-
+export const ProblemController = {
   async createProblem(req: Request, res: Response): Promise<void> {
-    const newProblem = await this.problemService.createProblem(req.body);
+    const newProblem = await problemService.createProblem(req.body);
     res.status(201).json({
       message: "Problem created successfully",
-      problem: newProblem,
+      data: newProblem,
       success: true,
     });
-  }
+  },
 
   async getProblemById(req: Request, res: Response): Promise<void> {
-    const problem = await this.problemService.getProblemById(req.params.id);
+    const problem = await problemService.getProblemById(req.params.id);
     if (!problem) {
       res.status(404).json({ message: "Problem not found", success: false });
       return;
     }
-    res.status(200).json({ problem, success: true });
-  }
+    res.status(200).json({
+      message: "Problem found successfully",
+      data: problem,
+      success: true,
+    });
+  },
   async getAllProblems(_req: Request, res: Response): Promise<void> {
-    const problems = await this.problemService.getAllProblems();
-    res.status(200).json({ problems, success: true });
-  }
+    const problems = await problemService.getAllProblems();
+    res.status(200).json({ data: problems, success: true });
+  },
   async updateProblem(req: Request, res: Response): Promise<void> {
-    const updatedProblem = await this.problemService.updateProblem(
+    const updatedProblem = await problemService.updateProblem(
       req.params.id,
       req.body,
     );
     res.status(200).json({
       message: "Problem updated successfully",
-      problem: updatedProblem,
+      data: updatedProblem,
       success: true,
     });
-  }
+  },
 
   async deleteProblem(req: Request, res: Response): Promise<void> {
-    const deleted = await this.problemService.deleteProblem(req.params.id);
+    const deleted = await problemService.deleteProblem(req.params.id);
     if (!deleted) {
       res.status(404).json({ message: "Problem not found", success: false });
       return;
@@ -60,17 +58,29 @@ export class ProblemController implements IProblemController {
     res
       .status(200)
       .json({ message: "Problem deleted successfully", success: true });
-  }
+  },
 
   async findByDifficulty(req: Request, res: Response): Promise<void> {
     const difficulty = req.params.difficulty as "easy" | "medium" | "hard";
-    const problems = await this.problemService.findByDifficulty(difficulty);
-    res.status(200).json({ problems, success: true });
-  }
+    const problems = await problemService.findByDifficulty(difficulty);
+    res
+      .status(200)
+      .json({
+        message: "Problems found successfully",
+        data: problems,
+        success: true,
+      });
+  },
 
   async searchProblems(req: Request, res: Response): Promise<void> {
     const query = req.query.q as string;
-    const problems = await this.problemService.searchProblems(query);
-    res.status(200).json({ problems, success: true });
-  }
-}
+    const problems = await problemService.searchProblems(query);
+    res
+      .status(200)
+      .json({
+        message: "Problems found successfully",
+        data: problems,
+        success: true,
+      });
+  },
+};

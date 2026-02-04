@@ -15,17 +15,14 @@ export interface IProblem extends Document {
   testCases: ITestCase[];
 }
 
-const testCaseSetSchema = new mongoose.Schema<ITestCase>(
-  {
-    input: { type: String, required: [true, "Input is required"], trim: true },
-    output: {
-      type: String,
-      required: [true, "Output is required"],
-      trim: true,
-    },
+const testCaseSetSchema = new mongoose.Schema<ITestCase>({
+  input: { type: String, required: [true, "Input is required"], trim: true },
+  output: {
+    type: String,
+    required: [true, "Output is required"],
+    trim: true,
   },
-  { timestamps: true },
-);
+});
 
 const problemSchema = new mongoose.Schema<IProblem>(
   {
@@ -54,7 +51,17 @@ const problemSchema = new mongoose.Schema<IProblem>(
     },
     testCases: [testCaseSetSchema],
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+    toJSON: {
+      transform: (_doc, ret: any) => {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+        return ret;
+      },
+    },
+  },
 );
 
 problemSchema.index({ title: 1 }, { unique: true });

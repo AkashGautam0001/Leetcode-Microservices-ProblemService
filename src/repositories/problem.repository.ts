@@ -22,11 +22,18 @@ export class ProblemRepository implements IProblemRepository {
   }
 
   async getProblemById(id: string): Promise<IProblem | null> {
-    return await Problem.findById(id);
+    const problem = await Problem.findById(id);
+    if (!problem) {
+      return null;
+    }
+    return problem;
   }
 
   async getAllProblems(): Promise<{ problems: IProblem[]; total: number }> {
     const problems = await Problem.find();
+    if (!problems) {
+      return { problems: [], total: 0 };
+    }
     return { problems, total: problems.length };
   }
 

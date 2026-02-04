@@ -30,7 +30,7 @@ problemRouter.get(
   ProblemController.findByDifficulty,
 );
 problemRouter.get("/:id", ProblemController.getProblemById);
-problemRouter.post("/", ProblemController.createProblem);
+problemRouter.post("/", validateRequestBody(createProblemSchema), ProblemController.createProblem);
 problemRouter.put(
   "/:id",
   validateRequestBody(updateProblemSchema),
